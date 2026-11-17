@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kantor AI V2 — Danish Flasher Bekasi</title>
+<style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#eaf3ff;background:#071122}*{box-sizing:border-box}body{margin:0}button,input,textarea,select{font:inherit}button{cursor:pointer}header{background:#0c1b34;border-bottom:1px solid #29466c;padding:15px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;position:sticky;top:0;z-index:3}header strong{font-size:17px}.sub{color:#91b1d5;font-size:12px}.layout{display:flex;min-height:calc(100vh - 69px)}nav{width:245px;flex-shrink:0;background:#0b1830;padding:14px;border-right:1px solid #243b59}nav button{width:100%;border:0;color:#c4d9f4;background:none;padding:11px 12px;text-align:left;border-radius:9px;margin:2px 0}nav button.active,nav button:hover{background:#164b7b;color:white}main{padding:22px;width:100%;min-width:0;max-width:1450px}.panel{background:#10233f;border:1px solid #2b496b;border-radius:15px;padding:18px;margin-bottom:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.stat{padding:16px;border-radius:12px;background:#183454}.stat b{font-size:29px;display:block;color:#70e3fa}h1{font-size:24px;margin:0 0 7px}h2{font-size:18px;margin:0 0 12px}h3{font-size:15px;margin:8px 0}p{line-height:1.55}label{display:block;color:#b9cce6;font-size:13px;margin-top:9px}input,textarea,select{width:100%;background:#07162b;color:#fff;border:1px solid #385779;border-radius:9px;padding:11px;margin:5px 0}textarea{min-height:110px;resize:vertical}.btn{background:#2b537b;border:0;border-radius:9px;padding:10px 13px;color:white;margin:3px 4px 3px 0}.primary{background:#14c5e5;color:#062235;font-weight:700}.danger{background:#81354a}.success{background:#187d68}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.muted{color:#9cb6d5}.tag{display:inline-block;border-radius:20px;background:#244b72;padding:4px 9px;font-size:12px}.output{white-space:pre-wrap;overflow-wrap:anywhere;background:#06162c;border:1px solid #2d4d6d;border-radius:10px;padding:14px;min-height:75px;line-height:1.55}table{width:100%;border-collapse:collapse}td,th{border-bottom:1px solid #304760;padding:9px;text-align:left;font-size:13px;vertical-align:top}th{color:#9fc8e6}.scroll{overflow-x:auto}.hide{display:none!important}.notice{border-left:3px solid #17c9e7;padding:9px 12px;background:#122d49;border-radius:5px}.mini{font-size:12px}.agent{border:1px solid #2d506e;padding:13px;border-radius:11px;background:#132c4b}#toast{position:fixed;bottom:18px;right:18px;background:#145e6b;color:white;padding:12px 17px;border-radius:10px;display:none;z-index:10}a{color:#8ce5f8}@media(max-width:750px){.layout{display:block}nav{width:100%;display:flex;overflow-x:auto;gap:5px;padding:8px;position:sticky;top:64px;z-index:2}nav button{white-space:nowrap;width:auto;flex-shrink:0;font-size:12px}main{padding:12px}.split{grid-template-columns:1fr}header strong{font-size:14px}}
+
+.office{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:12px;margin:14px 0}
+.worker{background:#173457;border:1px solid #315b82;border-radius:14px;padding:15px;text-align:center}
+.worker .person{font-size:45px;display:block;animation:working 1.5s ease-in-out infinite}
+.worker:nth-child(even) .person{animation-delay:.5s}
+.worker .desk{font-size:26px;display:block}
+.worker small{display:block;color:#7ee9c4;margin:7px 0}
+.worker .job{font-size:12px;color:#a7d7f5;min-height:36px}
+@keyframes working{50%{transform:translateY(-7px) rotate(4deg)}}
+.switch{display:flex;align-items:center;gap:10px}.switch input{width:20px;height:20px}
+</style></head><body>
+<header><div><strong>🤖 KANTOR AI DIGITAL MARKETING <span style="color:#5de1ff">V2</span></strong><div class="sub">DANISH FLASHER BEKASI • Jl. Raya Sriamur, Tambun Utara</div></div><div><span class="tag" id="roleBadge">OWNER</span> <button class="btn" onclick="showPage('settings')">⚙️</button></div></header>
+<div class="layout"><nav id="nav"></nav><main id="main"></main></div><div id="toast"></div>
+<script>
+"use strict";
+const KEY='danish_kantor_ai_v2';
+const defaults=()=>({brand:'DANISH FLASHER BEKASI',address:'Jl. Raya Sriamur, Tambun Utara, Bekasi',phone:'',role:'owner',tasks:[],customers:[],posts:[],ads:[],activities:[],settings:{approval:true,auto:false,lastAuto:0},draft:''});
+let db;
+try{db=Object.assign(defaults(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){db=defaults()}
+for(const k of ['tasks','customers','posts','ads','activities'])if(!Array.isArray(db[k]))db[k]=[];
+let page='dashboard';
+const pages=[['dashboard','📊 Dashboard Owner'],['agents','🏢 Kantor Pekerja AI'],['content','✍️ AI Content Creator'],['design','🎨 Desain & Editing'],['ads','📣 AI Ads Manager'],['affiliate','🛒 Affiliate Marketing'],['social','📅 Social Media Admin'],['crm','💬 CRM & WhatsApp'],['analytics','📈 Analisis & Laporan'],['approvals','✅ Persetujuan Owner'],['settings','⚙️ Pengaturan & Backup']];
+const agentNames=['Content Creator','Desain & Editing','Ads Manager','Affiliate Marketing','Social Media Admin','CRM & WhatsApp','Analisis & Laporan'];
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){alert('Penyimpanan browser tidak tersedia. Ekspor backup agar data tidak hilang.')}} 
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function val(id){return document.getElementById(id)?.value.trim()||''}
+function toast(msg){const e=document.getElementById('toast');e.textContent=msg;e.style.display='block';setTimeout(()=>e.style.display='none',2600)}
+function log(s){db.activities.unshift({date:new Date().toLocaleString('id-ID'),message:s});db.activities=db.activities.slice(0,100)}
+function addTask(div,title,body,kind='konten'){db.tasks.unshift({id:Date.now()+Math.random(),div,title,body,kind,status:'Menunggu persetujuan',created:new Date().toLocaleString('id-ID')});log('Draft '+title+' dibuat');save();toast('Draft masuk antrean persetujuan Owner')}
+function showPage(p){page=p;render();window.scrollTo(0,0)}
+function btn(text,fn,klass=''){return `<button class="btn ${klass}" onclick="${fn}">${text}</button>`}
+function navRender(){document.getElementById('nav').innerHTML=pages.map(([id,name])=>`<button class="${id===page?'active':''}" onclick="showPage('${id}')">${name}</button>`).join('')}
+function layout(title,body,desc=''){return `<h1>${title}</h1>${desc?`<p class="muted">${desc}</p>`:''}${body}`}
+function panel(s){return `<section class="panel">${s}</section>`}
+function stat(label,n){return `<div class="stat"><b>${n}</b>${label}</div>`}
+function table(head,rows){return `<div class="scroll"><table><thead><tr>${head.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows||`<tr><td colspan="${head.length}" class="muted">Belum ada data</td></tr>`}</tbody></table></div>`}
+
+const jobs=['Membuat caption promosi','Menyusun brief desain','Membuat strategi iklan','Menyiapkan konten affiliate','Menyusun kalender posting','Menyiapkan template chat','Merekap laporan'];
+function officeView(){return `<div class="office">${agentNames.map((name,i)=>`<div class="worker"><span class="person">${['👩‍💻','👨‍🎨','👩‍💼','👨‍💻','👩‍💻','👨‍💼','👩‍🔬'][i]}</span><span class="desk">💻</span><h3>${esc(name)}</h3><small>● ${db.settings?.auto?'Sedang bekerja':'Siap bekerja'}</small><div class="job">${db.settings?.auto?jobs[i]:'Menunggu perintah'}</div></div>`).join('')}</div>`}
+function autoTask(){
+ if(!db.settings?.auto)return;
+ const i=(db.settings.autoCount||0)%7;
+ db.settings.autoCount=(db.settings.autoCount||0)+1;
+ db.settings.lastAuto=Date.now();
+ const samples=[
+ `📱 ${db.brand}: Butuh servis HP? Ganti LCD gratis antigores premium; ganti baterai bergaransi 6 bulan. 📍 ${db.address}. Hubungi toko untuk konfirmasi harga dan ketersediaan.`,
+ `BRIEF DESAIN: Poster servis HP bertema biru neon. Headline: ${db.brand}. Tampilkan visual smartphone dan CTA konsultasi. Alamat: ${db.address}.`,
+ `RENCANA IKLAN: Target area Tambun Utara, tujuan pesan masuk. Siapkan video servis 15 detik dan evaluasi biaya per chat. Anggaran memerlukan persetujuan Owner.`,
+ `IDE AFFILIATE: Pilih aksesoris HP, verifikasi spesifikasi dan link affiliate sebelum promosi. Cantumkan informasi komisi affiliate.`,
+ `KALENDER: Senin tips baterai, Rabu edukasi layar, Jumat promo servis. Jadwal dan publikasi perlu disetujui.`,
+ `TEMPLATE CHAT: Halo, kami dari ${db.brand}. Ada kebutuhan servis HP yang bisa kami bantu? Kirim hanya kepada pelanggan yang setuju dihubungi.`,
+ `REKAP: ${db.tasks.length} draft pekerjaan, ${db.customers.length} pelanggan, ${db.posts.length} rencana posting. Tinjau persetujuan Owner.`
+ ];
+ addTask(agentNames[i],'Tugas otomatis: '+jobs[i],samples[i]);
+ if(['dashboard','agents','approvals'].includes(page))render();
+}
+function toggleAuto(on){
+ db.settings=db.settings||{};
+ db.settings.auto=on;
+ log(on?'Otomatisasi draft lokal dinyalakan':'Otomatisasi dihentikan');
+ save();render();
+ if(on)autoTask();
+}
+setInterval(()=>{
+ if(db.settings?.auto && Date.now()-(db.settings.lastAuto||0)>30000 && db.tasks.filter(t=>t.status==='Menunggu persetujuan').length<12)autoTask();
+},5000);
+
+function render(){
+navRender();document.getElementById('roleBadge').textContent=db.role==='owner'?'MODE OWNER':'MODE ADMIN (SIMULASI)';
+const pending=db.tasks.filter(t=>t.status==='Menunggu persetujuan').length;
+const done=db.tasks.filter(t=>t.status==='Disetujui').length;
+let html='';
+switch(page){
+case 'dashboard':
+html=layout('Dashboard Owner',`<div class="grid">${stat('Total draft tim AI',db.tasks.length)}${stat('Menunggu persetujuan',pending)}${stat('Draft disetujui',done)}${stat('Data pelanggan',db.customers.length)}${stat('Rencana posting',db.posts.length)}${stat('Rencana iklan',db.ads.length)}</div>`+
+panel(`<h2>🏢 Kantor pekerja AI</h2><label class="switch"><input type="checkbox" ${db.settings?.auto?'checked':''} onchange="toggleAuto(this.checked)"> Jalankan pekerjaan otomatis</label><p class="mini muted">Membuat draft template setiap ±30 detik selama halaman terbuka. Animasi pekerja hanya visualisasi, bukan orang atau AI yang terhubung.</p>${officeView()}`)+panel(`<h2>🚀 Mulai kerja</h2><p>Berikan tugas ke divisi, periksa hasil, lalu setujui. Semua output saat ini berupa draft, bukan posting atau chat otomatis.</p>${btn('Buka Kantor 7 Divisi',"showPage('agents')",'primary')}${btn('Review Draft',"showPage('approvals')")}`)+panel(`<h2>Aktivitas terakhir</h2>${db.activities.slice(0,8).map(x=>`<p class="mini"><b>${esc(x.date)}</b> — ${esc(x.message)}</p>`).join('')||'<p class="muted">Belum ada aktivitas.</p>'}`),
+'7 divisi aktif sebagai modul kerja berbasis template. Integrasi AI online belum diaktifkan.');
+break;
+case 'agents':
+html=layout('Kantor 7 Divisi AI',`<label class="switch"><input type="checkbox" ${db.settings?.auto?'checked':''} onchange="toggleAuto(this.checked)"> Aktifkan pekerjaan otomatis</label>${officeView()}<div class="grid">${agentNames.map((x,i)=>`<div class="agent"><h3>${['✍️','🎨','📣','🛒','📅','💬','📈'][i]} ${x}</h3><p class="mini muted">${['Caption dan skrip promosi','Brief poster dan banner','Rencana kampanye','Promosi link affiliate','Kalender konten','Database pelanggan dan template WA','Rekap kinerja marketing'][i]}</p>${btn('Buka Divisi',`showPage('${['content','design','ads','affiliate','social','crm','analytics'][i]}')`,'primary')}</div>`).join('')}</div>`,'Setiap divisi menghasilkan pekerjaan yang bisa direview Owner.');
+break;
+case 'content':
+html=layout('AI Content Creator',panel(`<h2>Generator promosi servis HP</h2><div class="split"><div><label>Layanan</label><select id="service"><option>Ganti LCD</option><option>Ganti Baterai</option><option>Service HP</option><option>Antigores Premium</option></select></div><div><label>Platform</label><select id="platform"><option>Facebook</option><option>Instagram</option><option>TikTok</option><option>WhatsApp Status</option></select></div></div><label>Keunggulan / Promo</label><input id="promo" placeholder="Contoh: Gratis antigores premium"><label>Gaya tulisan</label><select id="tone"><option>Profesional</option><option>Santai</option><option>Hard selling</option></select>${btn('Buat Draft Caption','makeContent()','primary')}<div id="contentResult" class="output">Hasil caption muncul di sini.</div>${btn('Salin Caption',"copyOutput('contentResult')")}${btn('Ajukan ke Owner',"submitOutput('contentResult','Content Creator','Caption promosi')")}`),'Generator ini memakai template lokal, belum model AI generatif.');
+break;
+case 'design':
+html=layout('Desain & Editing',panel(`<h2>Brief desain otomatis</h2><label>Jenis desain</label><select id="designType"><option>Poster Facebook</option><option>Story Instagram</option><option>Banner 60 × 120 cm</option><option>Thumbnail Video</option></select><label>Produk / layanan</label><input id="designProduct" placeholder="Contoh: Ganti LCD"><label>Pesan utama</label><input id="designMessage" placeholder="Contoh: Gratis antigores premium">${btn('Buat Brief Desain','makeDesign()','primary')}<div class="output" id="designResult">Brief desain akan muncul di sini.</div>${btn('Salin Brief',"copyOutput('designResult')")}${btn('Ajukan ke Owner',"submitOutput('designResult','Desain & Editing','Brief desain')")}`),'Modul ini membuat arahan desain, belum menghasilkan gambar.');
+break;
+case 'ads':
+html=layout('AI Ads Manager',panel(`<h2>Perencana kampanye iklan</h2><label>Tujuan</label><select id="adGoal"><option>Chat WhatsApp</option><option>Awareness lokal</option><option>Kunjungan toko</option></select><label>Target area</label><input id="adArea" value="Tambun Utara, Bekasi"><label>Budget harian (Rp)</label><input id="adBudget" type="number" min="0" value="30000"><label>Durasi (hari)</label><input id="adDays" type="number" min="1" value="7">${btn('Buat Rencana Iklan','makeAd()','primary')}<div class="output" id="adResult">Rencana iklan muncul di sini.</div>${btn('Simpan Rencana & Ajukan Owner','saveAd()')}`),'Tidak mengeluarkan biaya atau membuat iklan sungguhan.');
+break;
+case 'affiliate':
+html=layout('Affiliate Marketing',panel(`<h2>Generator konten affiliate</h2><label>Nama produk</label><input id="affName" placeholder="Contoh: Charger fast charging"><label>Link affiliate</label><input id="affLink" placeholder="https://..."><label>Manfaat produk</label><input id="affBenefit" placeholder="Contoh: praktis dibawa bepergian">${btn('Buat Caption Affiliate','makeAffiliate()','primary')}<div class="output" id="affResult">Caption affiliate muncul di sini.</div>${btn('Salin Caption',"copyOutput('affResult')")}${btn('Ajukan ke Owner',"submitOutput('affResult','Affiliate Marketing','Caption affiliate')")}`),'Link harus milik akun affiliate Anda; aplikasi tidak membaca halaman produk otomatis.');
+break;
+case 'social':
+html=layout('Social Media Admin',panel(`<h2>Jadwalkan draft posting</h2><label>Platform</label><select id="postPlatform"><option>Facebook Page</option><option>Facebook Pribadi</option><option>Instagram</option><option>TikTok</option></select><label>Tanggal & waktu</label><input type="datetime-local" id="postDate"><label>Konten</label><textarea id="postText" placeholder="Tulis caption atau tempel draft disetujui"></textarea>${btn('Simpan Jadwal','addPost()','primary')}`)+panel(`<h2>Kalender konten</h2>${table(['Jadwal','Platform','Konten','Status','Aksi'],db.posts.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.platform)}</td><td>${esc(x.text)}</td><td>${esc(x.status)}</td><td>${btn('Hapus',`deleteItem('posts',${x.id})`,'danger')}</td></tr>`).join(''))}`),'Jadwal adalah pengingat manual; tidak memposting otomatis.');
+break;
+case 'crm':
+html=layout('CRM & WhatsApp',panel(`<h2>Tambah pelanggan</h2><div class="split"><div><label>Nama pelanggan</label><input id="customerName"></div><div><label>Nomor WhatsApp</label><input id="customerPhone" placeholder="62812..."></div></div><label>Perangkat / kebutuhan</label><input id="customerNeed" placeholder="Contoh: Samsung A10s ganti baterai"><label>Status</label><select id="customerStatus"><option>Prospek</option><option>Dalam servis</option><option>Selesai</option><option>Follow-up</option></select>${btn('Simpan Pelanggan','addCustomer()','primary')}`)+panel(`<h2>Daftar pelanggan</h2>${table(['Pelanggan','WhatsApp','Kebutuhan','Status','Aksi'],db.customers.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.phone)}</td><td>${esc(x.need)}</td><td>${esc(x.status)}</td><td>${btn('Buka WA',`openWA(${x.id})`)}${btn('Hapus',`deleteItem('customers',${x.id})`,'danger')}</td></tr>`).join(''))}`),'WhatsApp dibuka dengan pesan yang disiapkan; pengguna tetap menekan Kirim sendiri.');
+break;
+case 'analytics':
+const count={};db.tasks.forEach(t=>count[t.div]=(count[t.div]||0)+1);
+html=layout('Analisis & Laporan',panel(`<h2>Ringkasan aktivitas</h2><div class="grid">${stat('Draft dibuat',db.tasks.length)}${stat('Disetujui',done)}${stat('Ditolak',db.tasks.filter(t=>t.status==='Ditolak').length)}${stat('Pelanggan',db.customers.length)}</div>`)+panel(`<h2>Produksi per divisi</h2>${table(['Divisi','Jumlah draft'],Object.entries(count).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join(''))}`)+panel(`<h2>Ekspor laporan</h2>${btn('Download CSV Draft',"exportCSV()",'primary')}`),'Angka berasal dari aktivitas yang dicatat dalam aplikasi, bukan metrik asli Meta/Shopee.');
+break;
+case 'approvals':
+html=layout('Persetujuan Owner',panel(`<p class="notice">Draft yang disetujui tidak langsung dipublikasikan. Owner dapat menyalin hasil dan menggunakannya secara manual.</p>`)+panel(`<h2>Antrean pekerjaan (${pending})</h2>${db.tasks.map(t=>`<div class="agent" style="margin-bottom:10px"><span class="tag">${esc(t.status)}</span><h3>${esc(t.title)} — ${esc(t.div)}</h3><p class="mini muted">${esc(t.created)}</p><div class="output">${esc(t.body)}</div><div class="row">${btn('Salin',`copyTask(${t.id})`)}${t.status==='Menunggu persetujuan'&&db.role==='owner'?btn('Setujui',`reviewTask(${t.id},'Disetujui')`,'success')+btn('Tolak',`reviewTask(${t.id},'Ditolak')`,'danger'):''}</div></div>`).join('')||'<p class="muted">Belum ada draft.</p>'}`),'Hanya mode Owner yang dapat menyetujui; role ini simulasi lokal, bukan sistem login aman.');
+break;
+case 'settings':
+html=layout('Pengaturan Owner & Backup',panel(`<h2>Profil toko</h2><label>Nama toko</label><input id="brand" value="${esc(db.brand)}"><label>Alamat</label><input id="address" value="${esc(db.address)}"><label>Nomor WhatsApp toko</label><input id="shopPhone" value="${esc(db.phone)}"><label>Mode tampilan</label><select id="role"><option value="owner" ${db.role==='owner'?'selected':''}>Owner</option><option value="admin" ${db.role==='admin'?'selected':''}>Admin (simulasi)</option></select>${btn('Simpan Pengaturan','saveSettings()','primary')}`)+panel(`<h2>Data & backup</h2><p class="muted">Semua data tersimpan hanya di browser perangkat ini. Tidak tersinkron antar HP. Simpan backup sebelum membersihkan browser.</p>${btn('Download Backup JSON','exportBackup()','primary')}<label>Pulihkan backup JSON</label><input type="file" id="importFile" accept=".json,application/json">${btn('Impor Backup','importBackup()')}${btn('Hapus Seluruh Data','resetData()','danger')}`)+panel(`<h2>Status integrasi</h2><p>🟡 AI API: belum tersambung<br>🟡 Meta Graph API: belum tersambung<br>🟡 WhatsApp Business API: belum tersambung<br>🟡 Database cloud & login aman: belum tersedia</p><p class="mini muted">Jangan menaruh API key rahasia di file HTML. Integrasi produksi harus memakai server/backend.</p>`));
+break;
+}
+document.getElementById('main').innerHTML=html;
+}
+function makeContent(){const s=val('service'),pl=val('platform'),pr=val('promo'),tone=val('tone');const offer=pr||({ 'Ganti LCD':'Gratis antigores premium','Ganti Baterai':'Garansi 6 bulan','Service HP':'Konsultasikan kerusakan HP Anda','Antigores Premium':'Perlindungan layar lebih nyaman'})[s];const hook=tone==='Santai'?'HP bermasalah? Yuk, beresin! 📱':tone==='Hard selling'?'PROMO SERVIS HP! Jangan tunda perbaikan! 🔥':'Solusi servis HP terpercaya untuk kebutuhan Anda. 📱';document.getElementById('contentResult').textContent=`${hook}\n\n🔧 Layanan: ${s}\n✨ ${offer}\n📍 ${db.brand}\n${db.address}\n\nHubungi kami untuk cek ketersediaan dan estimasi biaya.${db.phone?'\n📲 '+db.phone:''}\n\n#ServiceHP #TambunUtara #Bekasi #DanishFlasher\n\nPlatform: ${pl}`;}
+function makeDesign(){document.getElementById('designResult').textContent=`BRIEF DESAIN\nFormat: ${val('designType')}\nBrand: ${db.brand}\nTema: modern, profesional, biru navy + cyan\nJudul utama: ${val('designProduct')||'Service HP'}\nPenawaran: ${val('designMessage')||'Konsultasikan kebutuhan Anda'}\nElemen visual: smartphone, ikon servis, logo toko\nCTA: Hubungi kami / Datang ke toko\nAlamat: ${db.address}\nPastikan teks mudah dibaca di layar HP.`}
+function makeAd(){let budget=Math.max(0,Number(val('adBudget'))||0),days=Math.max(1,Number(val('adDays'))||1);document.getElementById('adResult').textContent=`RENCANA KAMPANYE META (DRAFT)\nTujuan: ${val('adGoal')}\nArea: ${val('adArea')}\nAnggaran: Rp${budget.toLocaleString('id-ID')}/hari × ${days} hari\nEstimasi total: Rp${(budget*days).toLocaleString('id-ID')}\nMateri: video singkat proses servis + testimoni berizin\nCTA: Hubungi toko\nEvaluasi: jumlah chat masuk, biaya per chat, konversi menjadi servis\nCatatan: bukan prediksi hasil, iklan belum dijalankan.`}
+function makeAffiliate(){let n=val('affName'),url=val('affLink');if(!n||!/^https?:\/\//i.test(url)){toast('Isi nama produk dan link http/https yang valid');return}document.getElementById('affResult').textContent=`🛒 Rekomendasi produk: ${n}\n\n${val('affBenefit')||'Cek spesifikasi dan kecocokan produk sebelum membeli.'}\n\nLihat detail dan harga terbaru di link berikut:\n${url}\n\n#Affiliate #AksesorisHP #RekomendasiProduk\n\nCatatan: tautan affiliate — saya dapat memperoleh komisi dari pembelian yang memenuhi syarat.`}
+function copyOutput(id){const text=document.getElementById(id)?.textContent||'';if(!text||/muncul di sini|akan muncul di sini/.test(text)){toast('Buat draft terlebih dahulu');return}navigator.clipboard?.writeText(text).then(()=>toast('Teks disalin')).catch(()=>toast('Salin manual dari kotak teks'))}
+function submitOutput(id,div,title){let txt=document.getElementById(id)?.textContent||'';if(!txt||/muncul di sini|akan muncul di sini/.test(txt)){toast('Buat draft terlebih dahulu');return}addTask(div,title,txt)}
+function saveAd(){let body=document.getElementById('adResult')?.textContent||'';if(!body||body.includes('muncul di sini')){toast('Buat rencana dahulu');return}db.ads.unshift({id:Date.now(),text:body});addTask('Ads Manager','Rencana iklan',body,'iklan')}
+function addPost(){let date=val('postDate'),text=val('postText');if(!date||!text){toast('Isi tanggal dan konten');return}db.posts.unshift({id:Date.now(),date,platform:val('postPlatform'),text,status:'Dijadwalkan manual'});log('Jadwal posting ditambahkan');save();render()}
+function addCustomer(){let name=val('customerName'),phone=val('customerPhone').replace(/[^\d]/g,'');if(!name||!/^(\d{9,15})$/.test(phone)){toast('Isi nama dan nomor WA valid (9–15 digit)');return}if(phone.startsWith('0'))phone='62'+phone.slice(1);db.customers.unshift({id:Date.now(),name,phone,need:val('customerNeed'),status:val('customerStatus')});log('Pelanggan '+name+' ditambahkan');save();render()}
+function openWA(id){let c=db.customers.find(x=>x.id===id);if(!c)return;let msg=`Halo ${c.name}, kami dari ${db.brand}. Kami ingin menindaklanjuti kebutuhan Anda terkait ${c.need||'layanan servis HP'}. Apakah ada yang bisa kami bantu?`;window.open('https://wa.me/'+encodeURIComponent(c.phone)+'?text='+encodeURIComponent(msg),'_blank','noopener')}
+function deleteItem(kind,id){if(!confirm('Hapus data ini?'))return;db[kind]=db[kind].filter(x=>x.id!==id);save();render()}
+function reviewTask(id,status){if(db.role!=='owner'){toast('Hanya mode Owner');return}let t=db.tasks.find(x=>x.id===id);if(!t)return;t.status=status;log(`${t.title}: ${status}`);save();render()}
+function copyTask(id){let t=db.tasks.find(x=>x.id===id);if(t)navigator.clipboard?.writeText(t.body).then(()=>toast('Draft disalin')).catch(()=>toast('Tidak dapat menyalin otomatis'))}
+function saveSettings(){db.brand=val('brand')||defaults().brand;db.address=val('address');db.phone=val('shopPhone');db.role=val('role');log('Pengaturan diperbarui');save();render();toast('Pengaturan disimpan')}
+function download(name,data,mime){let blob=new Blob([data],{type:mime}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function exportBackup(){download('backup_kantor_ai_danish_v2.json',JSON.stringify(db,null,2),'application/json');toast('Backup diunduh')}
+function exportCSV(){let rows=[['Tanggal','Divisi','Judul','Status','Isi'],...db.tasks.map(x=>[x.created,x.div,x.title,x.status,x.body])];download('laporan_kantor_ai_v2.csv','\ufeff'+rows.map(r=>r.map(x=>'"'+String(x??'').replace(/"/g,'""')+'"').join(',')).join('\r\n'),'text/csv;charset=utf-8')}
+function importBackup(){let file=document.getElementById('importFile').files[0];if(!file){toast('Pilih file JSON');return}file.text().then(t=>{let o=JSON.parse(t);if(!o||!Array.isArray(o.tasks)||!Array.isArray(o.customers)||!Array.isArray(o.posts)||!Array.isArray(o.ads))throw Error('Format backup tidak cocok');if(!confirm('Timpa seluruh data lokal dengan backup?'))return;db=Object.assign(defaults(),o);save();render();toast('Backup dipulihkan')}).catch(e=>alert('Gagal impor: '+e.message))}
+function resetData(){if(!confirm('Yakin hapus SEMUA data di browser ini?'))return;db=defaults();save();render()}
+db.settings=Object.assign(defaults().settings,db.settings||{});render();
+</script></body></html>
